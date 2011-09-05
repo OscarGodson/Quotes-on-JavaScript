@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quotes on JavaScript</title>
+    <style>
+      @import url(http://fonts.googleapis.com/css?family=IM+Fell+Great+Primer:400,400italic);
+      body { background:#F5F5F5; margin:20px 0 0 0; font-family: helvetica, arial, sans-serif; font-size:13px; color:#333; }
+      .clear { clear:both; }
+      #wrapper { width:750px; margin:0 auto; }
+      h1 {  float:left; }
+        h1 svg { position:relative; top:20px; }
+        h1 a { color:#000; text-decoration:none; }
+        svg { display:none; }
+      a { color:#E84E13; }
+      h2 { font-weight:normal; }
+      blockquote { background:#fff; padding:15px; margin:15px; font-family: 'IM Fell Great Primer', georgia, serif; font-size:25px; }
+      blockquote:before { content:'\201C'; }
+      blockquote:after { content:'\201D'; }
+      cite { font-size:19px; }
+      cite:before { content:'- '; }
+      nav { float:right; }
+      nav ol { list-style:none; padding:15px 0; }
+      nav li { float:left; margin:0 25px 0 0; }
+      nav a { text-decoration:none; }
+      #copyright { font-size:12px; color:#666; margin:50px 0 0 0; }
+        #copyright span { font-style:italic; }
+        
+      [data-page=true] { display:none; }
+        
+      #quote blockquote, #quote cite { display:none; }
+      #wufooFormm7x3w7 { height:425px; }
+      #submit { margin:15px 0 0 -7px; }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <header>
+        <h1><a href="#!/home">Quotes on JavaScript</a></h1>
+        <nav>
+          <ol>
+            <li><a href="#!/about">About</a></li>
+            <li><a href="#!/submit">Submit</a></li>
+            <li><a href="https://github.com/OscarGodson/Quotes-on-JavaScript">Fork us!</a></li>
+          </ol>
+        </nav>
+      </header>
+      <br class="clear">
+      <article id="quote" data-page-id="home" data-page="true">
+        <blockquote></blockquote>
+        <cite></cite>
+      </article>
+      <article id="about" data-page-id="about" data-page="true">
+        <h2>About Quotes on JavaScript</h2>
+        <p>Quotes on JavaScript is an open-source web site about quotes on JavaScript. My idea is spawned from <a href="http://twitter.com/chriscoyier">Chris Coyier's</a> <a href="http://quotesondesign.com">Quotes on Design</a>. Currently the site is just a place for random quotes with shareble URLs, but I'm actively working on getting an API to request quotes in general, quotes by certain people, and even a "widget" to throw in random quotes onto your blog or site.</p>
+        <p>If you have a quote you'd like to share go to the <a href="#!/submit">submit</a> page and let's hear about it. It doesn't have to be by a JavaScript celebrity either, so if you're feeling creative send us your quote.</p>
+      </article>
+      <article id="submit" data-page-id="submit" data-page="true">
+        <script type="text/javascript">var host = (("https:" == document.location.protocol) ? "https://secure." : "http://");document.write(unescape("%3Cscript src='" + host + "wufoo.com/scripts/embed/form.js' type='text/javascript'%3E%3C/script%3E"));</script>
+        <script type="text/javascript">
+        var m7x3w7 = new WufooForm();
+        m7x3w7.initialize({
+        'userName':'oscargodson', 
+        'formHash':'m7x3w7',
+        'autoResize':true,
+        'header':'show'});
+        m7x3w7.display();
+        </script>
+      </article>
+        <!-- -->
+      <footer>
+        <p id="copyright">Follow me on Twitter <a href="http://twitter.com/oscargodson">@oscargodson</a></p>
+      </footer>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script>
+    
+      $.getJSON('http://quotesonjavascript.com/quotes.php?callback=?',function(json){
+        var quoteId = 0;
+        if(window.location.href.indexOf('#!/quote') > -1){
+          var quoteDbId = window.location.href.split('#!/quote/')[1];
+          for(x = 0; x < json.length; x++){
+            if(quoteDbId  === json[x]['_id']){
+              quoteId = x;
+            }
+          }
+          routeUrl();
+        }
+        else{
+          quoteId = Math.floor(Math.random()*json.length);
+          if(window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.hash === '#!/home'){
+            window.location.hash = '#!/quote/'+json[quoteId]._id;
+          }
+          else{
+            routeUrl();
+          }
+        }
+        
+        //Update the quote
+        $('#quote').find('blockquote').text(json[quoteId].quote).attr('data-quote-id',json[quoteId]._id).end().find('cite').text(json[quoteId].author);
+        
+        //Now fade it in, yo!
+        $('#quote').find('blockquote,cite').fadeIn();
+      });
+      
+      
+      //Changes the page on links by hiding all of "data-pages" then show the matching one
+      var changePage = function(p){
+        $('[data-page="true"]').hide();
+        $('[data-page-id="'+p+'"]').show();
+      }
+      
+      /**
+       * Simple routing stuff...
+       */
+      var routeUrl = function(){
+        if(window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.href.indexOf('#!/quote') > -1){
+         //Only show the home page which depends...
+         changePage('home');
+       }
+       else{
+         //Show the page requested
+         changePage(window.location.href.split('#!/')[1]);
+       } 
+      }
+      
+      window.onhashchange = function(){
+        routeUrl();
+      }
+      
+    </script>
+  </body>
+</html>
