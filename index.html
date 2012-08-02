@@ -74,10 +74,10 @@
         <p id="copyright">Follow me on Twitter <a href="http://twitter.com/oscargodson">@oscargodson</a></p>
       </footer>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="quotes.js"></script>
     <script>
-      
+
       /**
        * Simple routing stuff...
        */
@@ -86,12 +86,12 @@
          //Only show the home page which depends...
          changePage('home');
        }
-       else{
+       else {
          //Show the page requested
          changePage(window.location.href.split('#!/')[1]);
-       } 
+       }
       };
-    
+
       //Changes the page on links by hiding all of "data-pages" then show the matching one
       var changePage = function (p) {
         $('[data-page="true"]').hide();
@@ -100,7 +100,7 @@
 
       getQuotes(function (quotes) {
         var quoteId = 0;
-        if(window.location.href.indexOf('#!/quote') > -1){
+        if (window.location.href.indexOf('#!/quote') > -1) {
           var quoteDbId = window.location.href.split('#!/quote/')[1];
           for(x = 0; x < quotes.length; x++){
             if(quoteDbId  === quotes[x]['id']){
@@ -109,29 +109,34 @@
           }
           routeUrl();
         }
-        else{
-          quoteId = Math.floor(Math.random()*quotes.length);
-          if(window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.hash === '#!/home'){
-            window.location.hash = '#!/quote/'+quotes[quoteId].id;
+        else {
+          quoteId = Math.floor(Math.random() * quotes.length);
+          if (window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.hash === '#!/home') {
+            window.location.hash = '#!/quote/' + quotes[quoteId].id;
           }
-          else{
+          else {
             routeUrl();
           }
         }
-        
+
         //Update the quote
         $('#quote')
           .find('blockquote').text(quotes[quoteId].quote).attr('data-quote-id',quotes[quoteId].id).end()
           .find('cite').text(quotes[quoteId].author);
-        
+
         //Now fade it in, yo!
         $('#quote').find('blockquote,cite').fadeIn();
       });
-    
+
+      $('.refresh').on('click', function (e) {
+        location.reload();
+        e.stopPropagation();
+      });
+
       window.onhashchange = function(){
         routeUrl();
       }
-      
+
     </script>
   </body>
 </html>
