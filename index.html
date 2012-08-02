@@ -4,9 +4,9 @@
     <title>Quotes on JavaScript</title>
     <style>
       @import url(http://fonts.googleapis.com/css?family=IM+Fell+Great+Primer:400,400italic);
-      body { background:#F5F5F5; margin:20px 0 0 0; font-family: helvetica, arial, sans-serif; font-size:13px; color:#333; }
+      body { background:#F5F5F5; margin:20px 10px 0 10px; font-family: helvetica, arial, sans-serif; font-size:13px; color:#333; }
       .clear { clear:both; }
-      #wrapper { width:750px; margin:0 auto; }
+      #wrapper { max-width:750px; margin:0 auto; }
       h1 {  float:left; }
         h1 svg { position:relative; top:20px; }
         h1 a { color:#000; text-decoration:none; }
@@ -50,7 +50,7 @@
       <article id="quote" data-page-id="home" data-page="true">
         <blockquote></blockquote>
         <cite></cite>
-        <br><a class="refresh" href="/">Refresh</a>
+        <br><a class="refresh" href="/">See Another</a>
       </article>
       <article id="about" data-page-id="about" data-page="true">
         <h2>About Quotes on JavaScript</h2>
@@ -75,47 +75,13 @@
       </footer>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="quotes.js"></script>
     <script>
-    
-      $.getJSON('http://quotesonjavascript.com/quotes.php?callback=?',function(json){
-        var quoteId = 0;
-        if(window.location.href.indexOf('#!/quote') > -1){
-          var quoteDbId = window.location.href.split('#!/quote/')[1];
-          for(x = 0; x < json.length; x++){
-            if(quoteDbId  === json[x]['_id']){
-              quoteId = x;
-            }
-          }
-          routeUrl();
-        }
-        else{
-          quoteId = Math.floor(Math.random()*json.length);
-          if(window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.hash === '#!/home'){
-            window.location.hash = '#!/quote/'+json[quoteId]._id;
-          }
-          else{
-            routeUrl();
-          }
-        }
-        
-        //Update the quote
-        $('#quote').find('blockquote').text(json[quoteId].quote).attr('data-quote-id',json[quoteId]._id).end().find('cite').text(json[quoteId].author);
-        
-        //Now fade it in, yo!
-        $('#quote').find('blockquote,cite').fadeIn();
-      });
-      
-      
-      //Changes the page on links by hiding all of "data-pages" then show the matching one
-      var changePage = function(p){
-        $('[data-page="true"]').hide();
-        $('[data-page-id="'+p+'"]').show();
-      }
       
       /**
        * Simple routing stuff...
        */
-      var routeUrl = function(){
+      var routeUrl = function () {
         if(window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.href.indexOf('#!/quote') > -1){
          //Only show the home page which depends...
          changePage('home');
@@ -124,8 +90,44 @@
          //Show the page requested
          changePage(window.location.href.split('#!/')[1]);
        } 
-      }
-      
+      };
+    
+      //Changes the page on links by hiding all of "data-pages" then show the matching one
+      var changePage = function (p) {
+        $('[data-page="true"]').hide();
+        $('[data-page-id="'+p+'"]').show();
+      };
+
+      getQuotes(function (quotes) {
+        var quoteId = 0;
+        if(window.location.href.indexOf('#!/quote') > -1){
+          var quoteDbId = window.location.href.split('#!/quote/')[1];
+          for(x = 0; x < quotes.length; x++){
+            if(quoteDbId  === quotes[x]['id']){
+              quoteId = x;
+            }
+          }
+          routeUrl();
+        }
+        else{
+          quoteId = Math.floor(Math.random()*quotes.length);
+          if(window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.hash === '#!/home'){
+            window.location.hash = '#!/quote/'+quotes[quoteId].id;
+          }
+          else{
+            routeUrl();
+          }
+        }
+        
+        //Update the quote
+        $('#quote')
+          .find('blockquote').text(quotes[quoteId].quote).attr('data-quote-id',quotes[quoteId].id).end()
+          .find('cite').text(quotes[quoteId].author);
+        
+        //Now fade it in, yo!
+        $('#quote').find('blockquote,cite').fadeIn();
+      });
+    
       window.onhashchange = function(){
         routeUrl();
       }
