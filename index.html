@@ -129,7 +129,7 @@
       });
 
       $('.refresh').on('click', function (e) {
-        location.reload();
+        window.location = window.location.href.split('#')[0];
         e.stopPropagation();
       });
 
