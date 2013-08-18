@@ -24,12 +24,6 @@
       nav a { text-decoration:none; }
       #copyright { font-size:12px; color:#666; margin:50px 0 0 0; }
         #copyright span { font-style:italic; }
-        
-      [data-page=true] { display:none; }
-        
-      #quote blockquote, #quote cite { display:none; }
-      #wufooFormm7x3w7 { height:425px; }
-      #submit { margin:15px 0 0 -7px; }
       
       .refresh { display:inline-block; margin:15px 15px 0 0; float:right;  }
     </style>
@@ -41,102 +35,22 @@
         <nav>
           <ol>
             <li><a href="#!/about">About</a></li>
-            <li><a href="#!/submit">Submit</a></li>
+            <li><a href="https://github.com/OscarGodson/Quotes-on-JavaScript/issues/new">Submit</a></li>
             <li><a href="https://github.com/OscarGodson/Quotes-on-JavaScript">Fork us!</a></li>
           </ol>
         </nav>
       </header>
       <br class="clear">
-      <article id="quote" data-page-id="home" data-page="true">
+      <article id="quote">
         <blockquote></blockquote>
         <cite></cite>
         <br><a class="refresh" href="/">See Another</a>
       </article>
-      <article id="about" data-page-id="about" data-page="true">
-        <h2>About Quotes on JavaScript</h2>
-        <p>Quotes on JavaScript is an open-source web site about quotes on JavaScript. My idea is spawned from <a href="http://twitter.com/chriscoyier">Chris Coyier's</a> <a href="http://quotesondesign.com">Quotes on Design</a>. Currently the site is just a place for random quotes with shareble URLs, but I'm actively working on getting an API to request quotes in general, quotes by certain people, and even a "widget" to throw in random quotes onto your blog or site.</p>
-        <p>If you have a quote you'd like to share go to the <a href="#!/submit">submit</a> page and let's hear about it. It doesn't have to be by a JavaScript celebrity either, so if you're feeling creative send us your quote.</p>
-      </article>
-      <article id="submit" data-page-id="submit" data-page="true">
-        <script type="text/javascript">var host = (("https:" == document.location.protocol) ? "https://secure." : "http://");document.write(unescape("%3Cscript src='" + host + "wufoo.com/scripts/embed/form.js' type='text/javascript'%3E%3C/script%3E"));</script>
-        <script type="text/javascript">
-        var m7x3w7 = new WufooForm();
-        m7x3w7.initialize({
-        'userName':'oscargodson', 
-        'formHash':'m7x3w7',
-        'autoResize':true,
-        'header':'show'});
-        m7x3w7.display();
-        </script>
-      </article>
-        <!-- -->
       <footer>
         <p id="copyright">Follow me on Twitter <a href="http://twitter.com/oscargodson">@oscargodson</a></p>
       </footer>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="quotes.js"></script>
-    <script>
-
-      /**
-       * Simple routing stuff...
-       */
-      var routeUrl = function () {
-        if(window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.href.indexOf('#!/quote') > -1){
-         //Only show the home page which depends...
-         changePage('home');
-       }
-       else {
-         //Show the page requested
-         changePage(window.location.href.split('#!/')[1]);
-       }
-      };
-
-      //Changes the page on links by hiding all of "data-pages" then show the matching one
-      var changePage = function (p) {
-        $('[data-page="true"]').hide();
-        $('[data-page-id="'+p+'"]').show();
-      };
-
-      getQuotes(function (quotes) {
-        var quoteId = 0;
-        if (window.location.href.indexOf('#!/quote') > -1) {
-          var quoteDbId = window.location.href.split('#!/quote/')[1];
-          for(x = 0; x < quotes.length; x++){
-            if(quoteDbId  === quotes[x]['id']){
-              quoteId = x;
-            }
-          }
-          routeUrl();
-        }
-        else {
-          quoteId = Math.floor(Math.random() * quotes.length);
-          if (window.location.hash === '#!/' || window.location.href.indexOf('#!') < 0 || window.location.hash === '#!/home') {
-            window.location.hash = '#!/quote/' + quotes[quoteId].id;
-          }
-          else {
-            routeUrl();
-          }
-        }
-
-        //Update the quote
-        $('#quote')
-          .find('blockquote').text(quotes[quoteId].quote).attr('data-quote-id',quotes[quoteId].id).end()
-          .find('cite').text(quotes[quoteId].author);
-
-        //Now fade it in, yo!
-        $('#quote').find('blockquote,cite').fadeIn();
-      });
-
-      $('.refresh').on('click', function (e) {
-        window.location = window.location.href.split('#')[0];
-        e.stopPropagation();
-      });
-
-      window.onhashchange = function(){
-        routeUrl();
-      }
-
-    </script>
   </body>
 </html>
