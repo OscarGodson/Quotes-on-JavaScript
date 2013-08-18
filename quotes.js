@@ -6,10 +6,7 @@ App.prototype.init = function init () {
   function getHash () { return window.location.hash };
   $(window).on('hashchange', function () {
     this.render(getHash().split('#!/quote/')[1]);
-  }.bind(this));
-
-  // If no hash exists, make one, if it does manually trigger hashchange so the app runs
-  getHash().indexOf('#!/') == -1 ? window.location.hash = '#!/' : $(window).trigger('hashchange');
+  }.bind(this)).trigger('hashchange');
 }
 
 App.prototype.getData = function getData (url, callback) {
@@ -20,12 +17,13 @@ App.prototype.getData = function getData (url, callback) {
   }.bind(this));
 }
 
-App.prototype.render = function render (page) {
-  page = page || Math.floor(Math.random() * this.data.length);
-  var quote = this.findQuoteById(page);
+App.prototype.render = function render (id) {
+  id = id || Math.floor(Math.random() * this.data.length);
+  var quote = this.findQuoteById(id);
   var quoteEl = $('#quote');
   quoteEl.find('blockquote').text(quote.quote);
   quoteEl.find('cite').text(quote.author);
+  quoteEl.find('.permalink').attr('href', '#!/quote/' + id);
 };
 
 App.prototype.findQuoteById = function findQuoteById (id) {
