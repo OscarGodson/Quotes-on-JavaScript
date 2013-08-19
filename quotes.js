@@ -21,8 +21,8 @@ App.prototype.render = function render (id) {
   id = id || Math.floor(Math.random() * this.data.length);
   var quote = this.findQuoteById(id);
   var quoteEl = $('#quote');
-  quoteEl.find('blockquote').text(quote.quote);
-  quoteEl.find('cite').text(quote.author);
+  quoteEl.find('blockquote').html(quote.quote);
+  quoteEl.find('cite').html(quote.author);
   quoteEl.find('.permalink').attr('href', '#!/quote/' + id);
 };
 
