@@ -37,4 +37,9 @@
   "id": "7",
   "author": "Douglas Crockford",
   "quote": "I now see my early attempts to support the classical model in JavaScript as a mistake."
+},
+{
+  "id": "8",
+  "author": "Jeff Atwood",
+  "quote": "Any application that can be written in JavaScript, will eventually be written in JavaScript."
 }]
