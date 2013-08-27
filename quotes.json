@@ -32,4 +32,9 @@
   "id": "6",
   "author": "Jeremy Foster",
   "quote": "Every developer loves and hates JavaScript a little bit."
+},
+{
+  "id": "7",
+  "author": "Douglas Crockford",
+  "quote": "I now see my early attempts to support the classical model in JavaScript as a mistake."
 }]
