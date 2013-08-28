@@ -42,4 +42,9 @@
   "id": "8",
   "author": "Jeff Atwood",
   "quote": "Any application that can be written in JavaScript, will eventually be written in JavaScript."
+},
+{
+  "id": "9",
+  "author": "James Coglan",
+  "quote": "&lsquo;Should Google be able to find this?&rsquo; is a pretty good yardstick for whether you should render something with JS or not."
 }]
