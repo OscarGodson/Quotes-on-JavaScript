@@ -47,4 +47,9 @@
   "id": "9",
   "author": "James Coglan",
   "quote": "&lsquo;Should Google be able to find this?&rsquo; is a pretty good yardstick for whether you should render something with JS or not."
+},
+{
+  "id": "10",
+  "author": "John Johnson",
+  "quote": "First, solve the problem. Then, write the code."
 }]
